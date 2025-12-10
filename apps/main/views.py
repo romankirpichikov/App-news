@@ -47,7 +47,9 @@ class PostListCreateView(generics.ListCreateAPIView):
     ordering = ['-created_at']
 
     def get_queryset(self):
+        """Возвращает посты с учетом прав доступа"""
 
+        queryset = Post.objects.select_related('author', 'category')
         # фильтрация по правам доступа
         if not self.request.user.is_authenticated:
             # Если пользоваатель не авторизован, показать только опубликованные посты
